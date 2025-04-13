@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>School Result 2025-26</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    body { font-family: Arial; background: #f2f2f2; text-align: center; color: black; padding: 20px; }
+    h1 { color: red; margin-bottom: 0; }
+    h2 { margin: 5px 0 20px; }
+    .container { background: white; padding: 20px; border-radius: 10px; max-width: 800px; margin: auto; }
+    input { padding: 10px; font-size: 16px; width: 60%; margin-bottom: 10px; }
+    button { padding: 10px 15px; font-size: 16px; margin-left: 5px; cursor: pointer; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 2px solid blue; padding: 8px; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>HOME SCHOOL ENGLISH MEDIUM</h1>
+    <h2>RESULT OF YEAR 2025-26</h2>
+
+    <input type="text" id="seatInput" placeholder="Enter Seat Number (e.g. 3A03)" />
+    <button onclick="searchResult()">Search</button>
+    <button onclick="downloadPDF()">Download PDF</button>
+
+    <div id="resultCard" class="hidden"></div>
+  </div>
+
+  <script>
+    const results = [
+      { seat: "1A01", name: "MANIYA KRUNALKUMAR", std: 1, div: "A", guj: 58, eng: 34, math: 90, sci: 63, soc: 51, sans: 40, comp: 66, total: 402, perc: 57.43, result: "PASS" },
+      { seat: "1B02", name: "VELANI AKASH", std: 1, div: "B", guj: 71, eng: 86, math: 45, sci: 80, soc: 52, sans: 48, comp: 36, total: 418, perc: 59.71, result: "PASS" },
+      { seat: "2A01", name: "KATARA RAMESHBHAI", std: 2, div: "A", guj: 48, eng: 73, math: 52, sci: 49, soc: 43, sans: 56, comp: 47, total: 368, perc: 52.57, result: "PASS" },
+      { seat: "2A02", name: "LATHIYA MANOJBHAI", std: 2, div: "A", guj: 55, eng: 84, math: 41, sci: 42, soc: 68, sans: 74, comp: 100, total: 464, perc: 66.29, result: "PASS" },
+      { seat: "3A03", name: "GOHIL JAYDIPSINH", std: 3, div: "A", guj: 98, eng: 41, math: 78, sci: 77, soc: 93, sans: 94, comp: 40, total: 521, perc: 74.43, result: "PASS" },
+      { seat: "5B04", name: "TRIVEDI PRADIPBHAI", std: 5, div: "B", guj: 53, eng: 69, math: 72, sci: 93, soc: 84, sans: 60, comp: 71, total: 502, perc: 71.71, result: "PASS" },
+    ];
+
+    function searchResult() {
+      const seat = document.getElementById("seatInput").value.trim().toUpperCase();
+      const student = results.find(s => s.seat === seat);
+      const card = document.getElementById("resultCard");
+
+      if (!student) {
+        card.innerHTML = `<p>No result found for <strong>${seat}</strong></p>`;
+        card.classList.remove("hidden");
+        return;
+      }
+
+      card.innerHTML = `
+        <div id="pdfArea">
+          <h3>${student.name}</h3>
+          <p><strong>Seat No:</strong> ${student.seat} | <strong>Std:</strong> ${student.std} ${student.div}</p>
+          <table>
+            <tr><th>Subject</th><th>Marks</th></tr>
+            <tr><td>Gujarati</td><td>${student.guj}</td></tr>
+            <tr><td>English</td><td>${student.eng}</td></tr>
+            <tr><td>Math</td><td>${student.math}</td></tr>
+            <tr><td>Science</td><td>${student.sci}</td></tr>
+            <tr><td>Social</td><td>${student.soc}</td></tr>
+            <tr><td>Sanskrit</td><td>${student.sans}</td></tr>
+            <tr><td>Computer</td><td>${student.comp}</td></tr>
+            <tr><th>Total</th><th>${student.total}</th></tr>
+            <tr><th>Percentage</th><th>${student.perc}%</th></tr>
+            <tr><th>Result</th><th>${student.result}</th></tr>
+          </table>
+        </div>
+      `;
+      card.classList.remove("hidden");
+    }
+
+    function downloadPDF() {
+      const element = document.getElementById("pdfArea");
+      if (!element) return alert("Please search first.");
+      html2pdf().from(element).save("Result.pdf");
+    }
+  </script>
+</body>
+</html>
